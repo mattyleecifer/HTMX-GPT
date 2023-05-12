@@ -1,0 +1,23 @@
+<tr style="background-color: #393939; display: inline-block;"  hx-get="/tokenupdate" hx-trigger="load" hx-target="#tokens" hx-swap="innerHTML">
+  <td>
+    <div class="agent">AI</div>
+  </td>
+  <td id="reply-{{ messageid }}">
+    <div class="message" messageid={{ messageid }} style="float: left;">
+        {% for para in message %}
+        {{ para }}<br>
+        {% endfor %}
+    </div>
+    <div class="editbutton">
+        <form hx-get="/edit" hx-target="#reply-{{ messageid }}" hx-swap="outerHTML">
+            <input type="hidden" name="messageid" value={{ messageid }}>
+            <button class="btn">Edit</button>
+        </form>
+        <form hx-post="/delete" hx-target="closest tr" hx-swap="outerHTML">
+            <input type="hidden" name="messageid" value={{ messageid }}>
+            <button class="btn">Delete</button>
+        </form>
+    </div>
+  </td>
+</tr>
+<tr id="chattext" hx-get="/scroll" hx-trigger="load" hx-target="this" hx-swap="none, show:bottom"></tr>

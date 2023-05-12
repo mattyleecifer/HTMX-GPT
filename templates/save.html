@@ -1,0 +1,14 @@
+<div class="savedchat" id="savedchat-{{ chatid }}">
+    <div>{{ title }}</div>
+    <div>
+        <form hx-post="/load" hx-target="#top-row" hx-swap="innerHTML">
+            <input type="hidden" name="data" value="{{ data }}">
+            <button class="btn">Load</button>
+        </form>
+        <form hx-post="/deletechathistory" hx-target="#savedchat-{{ chatid }}" hx-swap="outerHTML">
+            <input type="hidden" name="chatid" value="{{ chatid }}">
+            <button class="btn">Delete</button>
+        </form>
+    </div>
+</div>
+<div id="addchat"></div>

@@ -1,0 +1,9 @@
+<td id="reply-{{ messageid }}">
+    <div id="reply-{{ messageid }}" class="message">
+        <form hx-post="/edit" hx-target="#reply-{{ messageid }}" hx-swap="outerHTML">
+            <textarea name="edittext">{{ edittext }}</textarea>
+            <input type="hidden" name="messageid" value={{ messageid }}>
+            <button class="btn" hx-post="/edit" hx-target="#reply-{{ messageid }}" hx-trigger="keydown[keyCode==13&&shiftKey!=true] from:#reply-{{ messageid }}" hx-swap="outerHTML">Submit</button>
+        </form>
+    </div>
+</td>

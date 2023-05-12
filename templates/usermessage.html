@@ -1,0 +1,32 @@
+<tr style="display: inline-block;">
+  <td>
+    <div class="agent">User</div>
+  </td>
+  <td id="reply-{{ messageid }}">
+    <div class="message" messageid={{ messageid }} style="float: left;">{% for para in usertext %}
+        {{ para }}<br>
+        {% endfor %}</div>
+    <div class="editbutton" style="float: right;">
+        <form hx-get="/edit" hx-target="#reply-{{ messageid }}" hx-swap="outerHTML">
+            <input type="hidden" name="messageid" value={{ messageid }}>
+            <button class="btn">Edit</button>
+        </form>
+        <form hx-post="/delete" hx-target="closest tr" hx-swap="outerHTML">
+            <input type="hidden" name="messageid" value={{ messageid }}>
+            <button class="btn">Delete</button>
+        </form>
+    </div>
+  </td>
+</tr>
+<tr id="chattext" hx-target="this" hx-post="/chat" hx-trigger="load" hx-swap="outerHTML" style="background-color: #393939">
+    <td>
+      <div class="agent"></div>
+    </td>
+    <td>
+      <div class="message">Loading...</div>
+      </div>
+    </td>
+    <td>
+        <div hx-get="/scroll" hx-trigger="load" hx-target="this" hx-swap="none, show:bottom"></div>
+    </td>
+</tr>

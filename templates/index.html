@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://unpkg.com/htmx.org@1.9.2" integrity="sha384-L6OqL9pRWyyFU3+/bjdSri+iIphTN/bvYyM37tICVyOJkWZLpP2vGn6VUEXgzg6h" crossorigin="anonymous"></script>
+    <title>My Webpage</title>
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            }
+        
+        .btn {
+            width: 7vw;
+            display: block;
+            margin: auto;
+        }
+
+        textarea {
+            height: 15vh;
+            width: calc(100% - 10vw);
+            border: none;
+            resize: none;
+            }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            border: none;
+            color: white;
+            background-color: #1E1E1E;
+            word-wrap: break-word;
+            }
+
+        .sidebar {
+            flex: 0.8;
+            height: 100vh;
+            border-right: 2px solid #000;
+            float: left;
+            overflow-y: auto;
+            }
+
+        .main-content {
+            flex: 4.2;
+            justify-content: flex-start;
+            float: right;
+            }
+
+        .top-row {
+            border-bottom: 2px solid #000;
+            overflow-y: auto;
+            height: 85vh;  
+            width: 100%;
+            }
+
+        .bottom-row {
+            width: 100%;
+            height: 15vh;
+            }
+
+        #centertext {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            }
+
+        .agent {
+            width: 8vw;
+            float: left;
+            text-align: center;
+            border-right: 1px solid #000;
+            }
+
+        .message {
+            width: 75vw;
+            float: left;
+            }
+
+        .agent, .message {
+            box-sizing: border-box;
+            padding: 10px;
+        }
+
+        .editbutton {
+            width: 7vw;
+            float: right;
+        }
+
+        tr {  
+            display: flex;
+            flex-direction: row;
+        }
+    </style>
+</head>
+<body>
+        <div class="container">
+            <div class="sidebar">
+                <div id="tokens" hx-get="/tokenupdate" hx-trigger="load" hx-target="this" hx-swap="innerHTML">
+                </div>
+                <p></p>
+                <div>
+                    <button class="btn" hx-post="/reset" hx-target="#top-row" hx-swap="innerHTML">Reset Chat</button>
+                </div>
+                <div id="messagehistory"><p>Message History</p>
+                    <div hx-get="/getchathistory" hx-target="this" hx-swap="outerHTML" hx-trigger="load"></div>
+                    <div id="addchat"></div>
+                    <p></p>
+                    <div><form hx-post="/save" hx-target="#addchat" hx-swap="outerHTML">
+                            <button class="btn">Save</button>
+                        </form></div>
+                </div>
+                <p></p>
+                <div>
+                    <button id="newsession" class="btn" hx-get="/newsession" hx-target="#top-row" hx-swap="innerHTML" hx-confirm="Are you sure? This will clear all saved chats.">Start new session</button>
+                </div>
+                <div>
+                    <a href="/key"><button id="changekey" class="btn">Change API key</button></a>
+                </div>
+            </div>
+            <div class="main-content">
+                <div class="top-row" id="top-row">
+                    <table><!-- link top row load to function that checks messages and loads blankpage or list of messages -->
+                        <tr id="chattext" hx-get="/loadmessages" hx-target="#top-row" hx-swap="innerHTML" hx-trigger="load">
+                        </tr>
+                    </table>
+                </div>
+                <div class="bottom-row">
+                    <form id="chatForm" hx-post="/clearchat" hx-target="#chatinput" hx-swap="outerHTML">
+                        <div>
+                            <textarea id="chatinput" type="text" name="text" autocomplete="off" style="float: left;"></textarea>
+                        </div>
+                        <div>    
+                            <button class="btn" hx-post="/clearchat" hx-target="#chatinput" hx-trigger="keydown[keyCode==13&&shiftKey!=true] from:#chatForm" hx-swap="outerHTML">Submit</button>
+                        </div>
+                    </form> 
+                </div>
+            </div>
+        </div>
+</body>
+</html>
