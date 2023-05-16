@@ -1,0 +1,42 @@
+@media only screen and (max-width: 600px) {
+    html, body{
+        font: 1em;
+    } 
+.btn {
+width: 100%;
+}
+textarea {
+height: 30%;
+width: 90%;
+}
+.sidebar {
+display: none;
+flex: none;
+height: auto;
+border-right: none;
+float: none;
+overflow-y: visible;
+}
+.main-content {
+flex: none;
+justify-content: flex-start;
+width: 100%;
+float: none;
+}
+.agent {
+width: 20%;
+float: none;
+text-align: left;
+border-right: none;
+border-bottom: 1px solid #000;
+}
+.message {
+width: 80%;
+float: none;
+border-bottom: 1px solid #000;
+}
+.editbutton {
+width: 100%;
+float: none;
+}
+}
