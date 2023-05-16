@@ -28,13 +28,13 @@ def home():
     # validate key
     if 'key' not in session:
         if os.path.exists(os.path.join(os.getcwd(), "apikey.txt")):
-        #     with open("apikey.txt", 'r') as file:
-        #         key = file.read()
-        #     session['key'] = key
-        #     openai.api_key = key
-        #     if not key or not key.startswith('sk-'):
-        #         return redirect('/key')
-        # else:
+            with open("apikey.txt", 'r') as file:
+                key = file.read()
+            session['key'] = key
+            openai.api_key = key
+            if not key or not key.startswith('sk-'):
+                return redirect('/key')
+        else:
             return redirect('/key')
     if 'default' not in session:
         session['default'] = "You are a helpful assistant. Please generate truthful, accurate, and honest responses while also keeping your answers succinct and to-the-point."
@@ -60,8 +60,8 @@ def savekey():
     if not key.startswith('sk-'):
         return redirect('/key')
     openai.api_key = key
-    # with open('apikey.txt', mode='w') as file:
-    #     file.write(key)
+    with open('apikey.txt', mode='w') as file:
+        file.write(key)
     session['key'] = key
     return redirect('/')
 
@@ -254,4 +254,4 @@ def loadmessages():
 
 
 if __name__ == '__main__':
-    app.run(port=8080)
+    app.run(host='0.0.0.0', port=8080, ssl_context='adhoc')
