@@ -1,0 +1,10 @@
+<div class="main-content">
+    <div><h3>Edit System Prompt</h1></div>
+    <div>
+        <form action="/setprompt" method="POST">
+            <textarea name='prompt' id="prompt">{{ prompt }}</textarea>
+            <button class="btn" hx-trigger="keydown[keyCode==13&&shiftKey!=true] from:#prompt">Submit</button>
+        </form>
+        <a href="/"><button class="btn">Back</button></a>
+    </div>
+</div>

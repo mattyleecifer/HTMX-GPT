@@ -3,10 +3,12 @@
     <div class="agent">User</div>
   </td>
   <td id="reply-{{ messageid }}">
-    <div class="message" messageid={{ messageid }} style="float: left;">{% for para in usertext %}
+    <div class="message" messageid={{ messageid }} style="float: left;">
+        {% for para in usertext %}
         {{ para }}<br>
-        {% endfor %}</div>
-    <div class="editbutton" style="float: right;">
+        {% endfor %}
+    </div>
+    <div class="editbutton">
         <form hx-get="/edit" hx-target="#reply-{{ messageid }}" hx-swap="outerHTML">
             <input type="hidden" name="messageid" value={{ messageid }}>
             <button class="btn">Edit</button>

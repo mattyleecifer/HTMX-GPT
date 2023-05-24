@@ -27,11 +27,19 @@ def getChat(tokencount, messages, text):
 def home():
     # validate key
     if 'key' not in session:
+        # if os.path.exists(os.path.join(os.getcwd(), "apikey.txt")):
+        #     with open("apikey.txt", 'r') as file:
+        #         key = file.read()
+        #     session['key'] = key
+        #     openai.api_key = key
+        #     if not key or not key.startswith('sk-'):
+        #         return redirect('/key')
+        # else:
             return redirect('/key')
-    if 'default' not in session:
-        session['default'] = "You are a helpful assistant. Please generate truthful, accurate, and honest responses while also keeping your answers succinct and to-the-point."
+    if 'prompt' not in session:
+        session['prompt'] = "You are a helpful assistant. Please generate truthful, accurate, and honest responses while also keeping your answers succinct and to-the-point."
     if 'messages' not in session:
-        session['messages'] = [{"role": "system", "content": session.get('default')}]
+        session['messages'] = [{"role": "system", "content": session.get('prompt')}]
     if 'tokencount' not in session:
         session['tokencount'] = 0
     if 'savedchats' not in session:
@@ -52,6 +60,8 @@ def savekey():
     if not key.startswith('sk-'):
         return redirect('/key')
     openai.api_key = key
+    # with open('apikey.txt', mode='w') as file:
+    #     file.write(key)
     session['key'] = key
     return redirect('/')
 
@@ -83,15 +93,15 @@ def clearchat():
 
 @app.route('/reset', methods=['POST'])
 def reset():
-    session['messages'] = [{"role": "system", "content": session.get('default')}]
+    session['messages'] = [{"role": "system", "content": session.get('prompt')}]
     session['tokencount'] = 0
     return render_template("blankchat.html")
 
 @app.route('/newsession', methods=['GET'])
 def newsession():
     session.clear()
-    session['default'] = "You are a helpful assistant. Please generate truthful, accurate, and honest responses while also keeping your answers succinct and to-the-point."
-    session['messages'] = [{"role": "system", "content": session.get('default')}]
+    session['prompt'] = "You are a helpful assistant. Please generate truthful, accurate, and honest responses while also keeping your answers succinct and to-the-point."
+    session['messages'] = [{"role": "system", "content": session.get('prompt')}]
     session['tokencount'] = 0
     session['savedchats'] = []
     messagelist = '<table><tr id="chattext"><td><div id="centertext" hx-get="/tokenupdate" hx-trigger="load" hx-target="#tokens" hx-swap="innerHTML">Start asking questions!</div></td></tr></table>'
@@ -122,6 +132,7 @@ def edited():
 def save():
     savedchats = session.get('savedchats')
     messages = session.get('messages')
+    messages = [i for i in messages if i['content'] != " " and i['content']]
     savedchats.append(messages)
     session['savedchats'] = savedchats
     chatid = len(savedchats) - 1
@@ -242,6 +253,19 @@ def loadmessages():
         messagelist += '<tr id="chattext" hx-get="/scroll" hx-trigger="load" hx-target="this" hx-swap="none, show:bottom"></tr></table>'
     return render_template_string(messagelist)
 
+@app.route('/editprompt', methods=['GET'])
+def editprompt():
+    prompt = session.get('prompt')
+    return render_template('editprompt.html', prompt=prompt)
+
+@app.route('/setprompt', methods=['POST'])
+def setprompt():
+    prompt = request.form['prompt']
+    print(prompt)
+    session['prompt'] = prompt
+    print(session.get('prompt'))
+    session['messages'] = [{"role": "system", "content": session.get('prompt')}]
+    return redirect('/')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, ssl_context='adhoc')
+    app.run(host='0.0.0.0', port=8080) # ssl_context='adhoc'
