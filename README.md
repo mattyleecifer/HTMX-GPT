@@ -1,4 +1,6 @@
 # HTMX-GPT
+Note: This project has now been rewritten in Golang and combined into [AgentSmith](https://github.com/mattyleecifer/AgentSmith).
+
 This is a OpenAI API interface with simple prompt editing controls for quick and easy prompt engineering built with HTMX.
 
 The project was created to help me learn HTMX, but I found the edit features really helpful and it evolved into what it is now.
